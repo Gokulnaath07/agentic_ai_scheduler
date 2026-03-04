@@ -1,0 +1,427 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8,
+              "triggerAtMinute": 35
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cd91622b-399a-44aa-a221-494674920e0e",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1b8wR5YbAkKFQM_7qBNKVrefrIMvjytkJEgh6fsCZRfM",
+          "mode": "list",
+          "cachedResultName": "75 blind problems",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1b8wR5YbAkKFQM_7qBNKVrefrIMvjytkJEgh6fsCZRfM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1b8wR5YbAkKFQM_7qBNKVrefrIMvjytkJEgh6fsCZRfM/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "progress",
+              "lookupValue": "false"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fac020f1-972f-4954-969a-bfb3f1677927",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "vaVSsFIRPZ6Ww4Pi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f26b723a-aecc-4f65-b6c1-7aadef282537",
+              "leftValue": "={{ $json.progress }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "454785b9-66af-4a4d-8de6-84bef4471d20",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Act as an encouraging and clear Computer Science Teacher. For the problem \"{{ $json.problem }}\", provide a response in PLAIN TEXT.\n\nDO NOT use Markdown symbols like ** or ###.\nDO NOT use \\n characters; use actual empty lines for spacing.\n\nUse this EXACT structure:\nPROBLEM: {{ $json.problem }}\nTEACHER'S OVERVIEW:\n[Provide a high-level conceptual overview. Explain the \"why\" behind the choice of data structure in simple terms.]\n\nSTEP-BY-STEP BREAKDOWN:\n[Provide a clear, numbered list of the logic as if you are explaining it on a whiteboard.]\n\nPYTHON SOLUTION:\n[REFERENCE STYLE: Paste a sample of your own code here]\n\n[Write the code for the current problem following the style provided above.]\n\nCOMPLEXITY ANALYSIS:\nTime: [Analysis]\nSpace: [Analysis]\n\nVIDEO EXPLANATION:\n[Find and provide a direct YouTube link to a video explaining this specific LeetCode problem. Prefer links from NeetCode or similar reputable channels.]",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "f73f575f-caa8-4a16-8382-257378757ee4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        640,
+        192
+      ],
+      "id": "43a7ffc3-378a-4bd3-b0f6-ff300582a596",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "1LYHfUni6iX1nDkf",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1b8wR5YbAkKFQM_7qBNKVrefrIMvjytkJEgh6fsCZRfM",
+          "mode": "list",
+          "cachedResultName": "75 blind problems",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1b8wR5YbAkKFQM_7qBNKVrefrIMvjytkJEgh6fsCZRfM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1b8wR5YbAkKFQM_7qBNKVrefrIMvjytkJEgh6fsCZRfM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": 0,
+            "sno": "={{ $('Get row(s) in sheet').item.json.sno }}",
+            "progress": "true",
+            "Problem Link": "=https://docs.google.com/document/d/{{ $json.documentId }}/edit"
+          },
+          "matchingColumns": [
+            "sno"
+          ],
+          "schema": [
+            {
+              "id": "sno",
+              "displayName": "sno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "problem",
+              "displayName": "problem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data structure",
+              "displayName": "data structure",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "progress",
+              "displayName": "progress",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Difficulty",
+              "displayName": "Difficulty",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Problem Link",
+              "displayName": "Problem Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1552,
+        48
+      ],
+      "id": "ee507f61-3f89-4e19-bc3c-beced41a1a1b",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "vaVSsFIRPZ6Ww4Pi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "folderId": "17l-JcoLEICNKyzJOl_x1q33EShAO7fNu",
+        "title": "={{ $('Get row(s) in sheet').item.json.problem }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        48
+      ],
+      "id": "90af9cfc-6540-4a7a-9578-f99d42b57910",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "y9ynihatwm8L00B1",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $('AI Agent').item.json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1328,
+        48
+      ],
+      "id": "3a1094a6-23e9-4f47-9e7e-9ead70a02681",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "y9ynihatwm8L00B1",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "from": "+14155238886",
+        "to": "+12245874888",
+        "toWhatsapp": true,
+        "message": "=Check out the document. Link: {{ $json['Problem Link'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        48
+      ],
+      "id": "f70d65dd-20a1-47f0-983b-ca60ea013b45",
+      "name": "Send an SMS/MMS/WhatsApp message",
+      "credentials": {
+        "twilioApi": {
+          "id": "sJlnKAvFKRy1PAly",
+          "name": "Twilio account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a document": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6d845ae7-055d-46f3-80b3-ea0f1669e280",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4af7b32f69967e12c1af4df0e46f8dca5a55fef51f1f90b81b55effb08109ce7"
+  },
+  "id": "AItNgZcrxgJWtKcw",
+  "tags": []
+}
