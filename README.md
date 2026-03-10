@@ -1,5 +1,6 @@
 # Autonomous Agentic Orchestration & Scheduled RAG System
-A high-reliability, stateful autonomous agent designed to solve and document 75 technical coding challenges daily. This system leverages Gemini 2.0 for reasoning and a distributed cloud architecture (Hugging Face + Supabase) to ensure 99.9% execution uptime.
+---
+**A high-reliability, stateful autonomous agent designed to solve and document 75 technical coding challenges daily. This system leverages Gemini 2.0 for reasoning and a distributed cloud architecture (Hugging Face + Supabase) to ensure 99.9% execution uptime.**
 ---
 ## 🚀 The Pipeline
 > **The system executes a complex multi-stage workflow every morning at 08:00 AM EST:**
