@@ -36,8 +36,10 @@ PostgreSQL 15+ (Supabase recommended)
 ```
 ---
 
-Core Environment Variables
-Bash
+## Core Environment Variables
+**Bash**
+---
+```
 # Database Configuration
 DB_TYPE=postgresdb
 DB_POSTGRESDB_PORT=5432
@@ -47,7 +49,7 @@ DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED=false
 GENERIC_TIMEZONE=America/New_York
 N8N_PYTHON_BINARY=/home/node/.n8n/python_env/bin/python
 EXECUTIONS_DATA_MAX_AGE=72
-
+```
 ---
 ## 🧠 Key Challenges & Solutions
 The "Silent Success" Bug: Discovered that n8n v2.x would mark nodes as "Success" even if the JSON payload was empty. Resolved by implementing "Always Output Data" guards and data-validation nodes before the Twilio handshake.
