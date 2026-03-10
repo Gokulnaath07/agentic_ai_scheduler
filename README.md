@@ -67,7 +67,7 @@ Database: Supabase (PostgreSQL)
 Infrastructure: Docker, Hugging Face Spaces
 
 Communication: Twilio API, Google Workspace APIs
-```
-OS: Linux (Debian Administration)
 
+OS: Linux (Debian Administration)
+```
 > **Developed by Gokulnaath Govindaraj**
